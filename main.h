@@ -9,4 +9,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+char *read_input(ssize_t *input_len);
+int exe_input(char **argv);
+
 #endif
