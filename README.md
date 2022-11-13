@@ -8,7 +8,7 @@ A simple command line shell in C.
 
 - All files end with a new line
 
-- The coding style follows the betty coding style. see <a href="https://github.com/holbertonschool/Betty/blob/master/betty-doc.pl">Betty docs </a>
+- The coding style follows the betty coding style. see <a href="https://github.com/holbertonschool/Betty/wiki">Betty wiki</a>
 
 - Only five functions per file
 
