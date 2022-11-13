@@ -53,3 +53,48 @@ int exe_input(char **argv)
 	}
 	return (0);
 }
+
+/**
+ * parser - splits a string
+ * @buffer: string
+ *
+ * Return: pointer to array of strings or NULL
+ */
+
+char **parser(char *buffer, int *num_token)
+{
+	char **av, *buffer_copy, *token, *delim;
+	unsigned int i;
+
+	*num_token = 0;
+	delim = " ";
+	buffer_copy = malloc(sizeof(char) * strlen(buffer));
+	if (buffer_copy == NULL)
+		return (NULL);
+	strcpy(buffer_copy, buffer);
+	token = strtok(buffer, delim);
+	(*num_token)++;
+	while (token != NULL)
+	{
+		(*num_token)++;
+		token = strtok(NULL, delim);
+	}
+	av = malloc(sizeof(char *) * (*num_token));
+	if (av == NULL)
+		return (NULL);
+	token = strtok(buffer_copy, delim);
+	for (i = 0; token; i++)
+	{
+		av[i] = malloc(sizeof(char) * strlen(token));
+		if (av[i] == NULL)
+		{
+			free_grid(av, *num_token);
+			return (NULL);
+		}
+		strcpy(av[i], token);
+		token = strtok(NULL, delim);
+	}
+	av[i] = NULL;
+	free(buffer_copy);
+	return (av);
+}
