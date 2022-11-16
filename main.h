@@ -10,7 +10,7 @@
 #include <sys/wait.h>
 
 char *read_input(ssize_t *input_len);
-int exe_input(char **argv);
+int exe_input(char **argv, char **env);
 char **parser(char *buffer, int *num_token);
 void free_grid(char **grid, int num);
 char *_strcpy(char *dest, char *src);

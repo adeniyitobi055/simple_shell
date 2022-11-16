@@ -20,11 +20,12 @@ char *read_input(ssize_t *input_len)
 /**
  * exe_input - execute users input.
  * @argv: argument vector.
+ * @env: environment variables
  *
  * Return: Always 0.
  */
 
-int exe_input(char **argv)
+int exe_input(char **argv, char **env)
 {
 	pid_t child_pid;
 
@@ -36,7 +37,7 @@ int exe_input(char **argv)
 	}
 	if (child_pid == 0)
 	{
-		if ((execve(argv[0], argv, NULL) == -1))
+		if ((execve(argv[0], argv, env) == -1))
 		{
 			perror("./shell");
 		}
