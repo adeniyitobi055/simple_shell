@@ -1,43 +1,44 @@
 #include "main.h"
 
 /**
- * main - read and execute input.
- * @ac: argument count.
- * @argv: argument vector.
- * @env: environment variables
+ * main - entry point
+ * @ac: arg count
+ * @av: arg vector
  *
- * Return: Always 0.
+ * Return: 0 on success, 1 on error
  */
-
-int main(int ac, char **argv, char *env[])
+int main(int ac, char **av)
 {
-	char *buffer;
-	ssize_t input_len = 1;
-	int num, num_token;
+	info_t info[] = { INFO_INIT };
+	int fd = 2;
 
-	if (!ac && !argv)
-		return (-1);
-	if (ac == 1)
+	asm ("mov %1, %0\n\t"
+	     "add $3, %0"
+	     : "=r" (fd)
+	     : "r" (fd));
+
+	if (ac == 2)
 	{
-		while (1)
+		fd = open(av[1], O_RDONLY);
+		if (fd == -1)
 		{
-			write(1, "$ ", 2);
-			buffer = read_input(&input_len);
-			if (input_len == -1)
+			if (errno == EACCES)
+				exit(126);
+			if (errno == ENOENT)
 			{
-				write(1, "\n", 1);
-				break;
+				_eputs(av[0]);
+				_eputs(": 0: Can't open ");
+				_eputs(av[1]);
+				_eputchar('\n');
+				_eputchar(BUF_FLUSH);
+				exit(127);
 			}
-			argv = parser(buffer, &num_token);
-			num = exe_input(argv, env);
-			if (num == 1)
-			{
-				perror("Execution failed");
-				return (1);
-			}
+			return (EXIT_FAILURE);
 		}
-	free(buffer);
-	free_grid(argv, num_token);
+		info->readfd = fd;
 	}
-	return (0);
+	populate_env_list(info);
+	read_history(info);
+	hsh(info, av);
+	return (EXIT_SUCCESS);
 }

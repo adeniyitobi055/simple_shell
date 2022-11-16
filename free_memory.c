@@ -1,18 +1,18 @@
 #include "main.h"
 
 /**
- * free_grid - frees memory of an array of strings
- * @grid: 2D array
- * @num: number of strings
+ * bfree - frees a pointer and NULLs the address
+ * @ptr: address of the pointer to free
  *
- * Return: nothing
+ * Return: 1 if freed, otherwise 0.
  */
-
-void free_grid(char **grid, int num)
+int bfree(void **ptr)
 {
-	int a;
-
-	for (a = 0; a < num; a++)
-		free(grid[a]);
-	free(grid);
+	if (ptr && *ptr)
+	{
+		free(*ptr);
+		*ptr = NULL;
+		return (1);
+	}
+	return (0);
 }
