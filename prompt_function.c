@@ -14,12 +14,6 @@ char *read_input(ssize_t *input_len)
 
 	n = 0;
 	*input_len = getline(&buffer, &n, stdin);
-	if (*input_len == -1)
-	{
-		write(1, "\n", 1);
-		exit(98);
-	}
-	buffer[(*input_len) - 1] = 0;
 	return (buffer);
 }
 
@@ -57,6 +51,7 @@ int exe_input(char **argv)
 /**
  * parser - splits a string
  * @buffer: string
+ * @num_token: length of token string
  *
  * Return: pointer to array of strings or NULL
  */
@@ -67,11 +62,11 @@ char **parser(char *buffer, int *num_token)
 	unsigned int i;
 
 	*num_token = 0;
-	delim = " ";
-	buffer_copy = malloc(sizeof(char) * strlen(buffer));
+	delim = " \n";
+	buffer_copy = malloc(sizeof(char) * _strlen(buffer));
 	if (buffer_copy == NULL)
 		return (NULL);
-	strcpy(buffer_copy, buffer);
+	_strcpy(buffer_copy, buffer);
 	token = strtok(buffer, delim);
 	(*num_token)++;
 	while (token != NULL)
@@ -85,13 +80,13 @@ char **parser(char *buffer, int *num_token)
 	token = strtok(buffer_copy, delim);
 	for (i = 0; token; i++)
 	{
-		av[i] = malloc(sizeof(char) * strlen(token));
+		av[i] = malloc(sizeof(char) * _strlen(token));
 		if (av[i] == NULL)
 		{
 			free_grid(av, *num_token);
 			return (NULL);
 		}
-		strcpy(av[i], token);
+		_strcpy(av[i], token);
 		token = strtok(NULL, delim);
 	}
 	av[i] = NULL;

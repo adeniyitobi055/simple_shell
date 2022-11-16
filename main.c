@@ -11,7 +11,7 @@
 int main(int ac, char **argv)
 {
 	char *buffer;
-	ssize_t input_len;
+	ssize_t input_len = 1;
 	int num, num_token;
 
 	if (ac == 1)
@@ -20,6 +20,11 @@ int main(int ac, char **argv)
 		{
 			write(1, "#cisfun$ ", 9);
 			buffer = read_input(&input_len);
+			if (input_len == -1)
+			{
+				write(1, "\n", 1);
+				break;
+			}
 			argv = parser(buffer, &num_token);
 			num = exe_input(argv);
 			if (num == 1)
